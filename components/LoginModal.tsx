@@ -36,9 +36,14 @@ const LoginModal = () => {
         }
       }, 100);
 
+      // Only focus if the modal is actually visible and not in settings page
+      if (!isUsernameVisible || (isUsernameVisible && username)) {
+        passwordInputRef.current?.focus();
+      }
+
       return () => clearTimeout(focusTimeout);
     }
-  }, [isLoginModalVisible, serverConfig, isSettingsPage]);
+  }, [isLoginModalVisible, serverConfig, isSettingsPage, username]);
 
   const handleLogin = async () => {
     const isLocalStorage = serverConfig?.StorageType === "localstorage";
@@ -110,7 +115,7 @@ const LoginModal = () => {
             onSubmitEditing={handleLogin}
           />
           <StyledButton
-            text={isLoading ? "" : "登录"}
+            text={isLoading ? "加载中..." : "登录"}  // 修改文本内容以适应加载状态
             onPress={handleLogin}
             disabled={isLoading}
             style={styles.button}
@@ -164,6 +169,8 @@ const styles = StyleSheet.create({
   button: {
     width: "100%",
     height: 50,
+    justifyContent: "center",  // 确保内容居中
+    alignItems: "center",
   },
 });
 

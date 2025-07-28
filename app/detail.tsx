@@ -93,7 +93,6 @@ export default function DetailScreen() {
               <ThemedText style={styles.metaText}>{detail.year}</ThemedText>
               <ThemedText style={styles.metaText}>{detail.type_name}</ThemedText>
             </View>
-
             <ScrollView style={styles.descriptionScrollView}>
               <ThemedText style={styles.description}>{detail.desc}</ThemedText>
             </ScrollView>
@@ -167,8 +166,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   poster: {
-    width: 200,
-    height: 300,
+    width: 400,
+    height: 600,
     borderRadius: 8,
   },
   infoContainer: {
@@ -182,7 +181,7 @@ const styles = StyleSheet.create({
   },
   title: {
     paddingTop: 16,
-    fontSize: 28,
+    fontSize: 35,
     fontWeight: "bold",
     flexShrink: 1,
   },
@@ -193,15 +192,16 @@ const styles = StyleSheet.create({
   metaText: {
     color: "#aaa",
     marginRight: 10,
-    fontSize: 14,
+    fontSize: 30,
   },
   descriptionScrollView: {
-    height: 150, // Constrain height to make it scrollable
+    // height: 200, // Constrain height to make it scrollable
+    overflow: "hidden",
   },
   description: {
-    fontSize: 14,
+    fontSize: 30,
     color: "#ccc",
-    lineHeight: 22,
+    lineHeight: 35,
   },
   favoriteButton: {
     padding: 10,
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   sourcesTitle: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: "bold",
   },
   sourceList: {
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
   },
   sourceButtonText: {
     color: "white",
-    fontSize: 16,
+    fontSize: 25,
   },
   badge: {
     backgroundColor: "#666",
@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   episodesTitle: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: "bold",
     marginBottom: 10,
   },
@@ -274,5 +274,6 @@ const styles = StyleSheet.create({
   },
   episodeButtonText: {
     color: "white",
+    fontSize: 25,
   },
 });

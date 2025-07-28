@@ -1,16 +1,34 @@
 import React, { useState, useCallback } from "react";
-import { StyleSheet, Switch, FlatList, Pressable, Animated } from "react-native";
+import { StyleSheet, FlatList, Pressable, Animated } from "react-native";
 import { useTVEventHandler } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { SettingsSection } from "./SettingsSection";
 import { useSettingsStore } from "@/stores/settingsStore";
 import useSourceStore, { useSources } from "@/stores/sourceStore";
+import { Colors } from "@/constants/Colors";
 
 interface VideoSourceSectionProps {
   onChanged: () => void;
   onFocus?: () => void;
   onBlur?: () => void;
 }
+
+// Custom Switch component for tvOS
+const CustomSwitch: React.FC<{
+  value: boolean;
+  onValueChange: (value: boolean) => void;
+  disabled?: boolean;
+}> = ({ value, onValueChange, disabled = false }) => {
+  return (
+    <Pressable 
+      style={[styles.switchContainer, value ? styles.switchContainerOn : styles.switchContainerOff]}
+      onPress={() => !disabled && onValueChange(!value)}
+      disabled={disabled}
+    >
+      <Animated.View style={[styles.switchThumb, value ? styles.switchThumbOn : styles.switchThumbOff]} />
+    </Pressable>
+  );
+};
 
 export const VideoSourceSection: React.FC<VideoSourceSectionProps> = ({ onChanged, onFocus, onBlur }) => {
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
@@ -70,12 +88,9 @@ export const VideoSourceSection: React.FC<VideoSourceSectionProps> = ({ onChange
           onBlur={() => setFocusedIndex(null)}
         >
           <ThemedText style={styles.resourceName}>{item.source_name}</ThemedText>
-          <Switch
+          <CustomSwitch
             value={isEnabled}
-            onValueChange={() => {}} // 禁用Switch的直接交互
-            trackColor={{ false: "#767577", true: "#007AFF" }}
-            thumbColor={isEnabled ? "#ffffff" : "#f4f3f4"}
-            pointerEvents="none"
+            onValueChange={() => handleToggle(item.source)}
           />
         </Pressable>
       </Animated.View>
@@ -146,5 +161,31 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     flex: 1,
     marginRight: 8,
+  },
+  // Custom Switch Styles
+  switchContainer: {
+    width: 50,
+    height: 30,
+    borderRadius: 15,
+    justifyContent: "center",
+    padding: 2,
+  },
+  switchContainerOn: {
+    backgroundColor: "#007AFF",
+  },
+  switchContainerOff: {
+    backgroundColor: "#767577",
+  },
+  switchThumb: {
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: "white",
+  },
+  switchThumbOn: {
+    alignSelf: "flex-end",
+  },
+  switchThumbOff: {
+    alignSelf: "flex-start",
   },
 });

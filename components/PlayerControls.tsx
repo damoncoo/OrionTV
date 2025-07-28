@@ -41,6 +41,8 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({ showControls, se
   const currentSourceName = currentSource?.source_name;
   const hasNextEpisode = currentEpisodeIndex < (episodes.length || 0) - 1;
 
+  // Refs for focus management
+
   const formatTime = (milliseconds: number) => {
     if (!milliseconds) return "00:00";
     const totalSeconds = Math.floor(milliseconds / 1000);
@@ -85,11 +87,17 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({ showControls, se
         </ThemedText>
 
         <View style={styles.bottomControls}>
-          <MediaButton onPress={setIntroEndTime} timeLabel={introEndTime ? formatTime(introEndTime) : undefined}>
+          <MediaButton 
+            onPress={setIntroEndTime} 
+            timeLabel={introEndTime ? formatTime(introEndTime) : undefined}
+          >
             <ArrowDownToDot color="white" size={24} />
           </MediaButton>
 
-          <MediaButton onPress={togglePlayPause} hasTVPreferredFocus={showControls}>
+          <MediaButton 
+            onPress={togglePlayPause} 
+            hasTVPreferredFocus={showControls}
+          >
             {status?.isLoaded && status.isPlaying ? (
               <Pause color="white" size={24} />
             ) : (
@@ -97,19 +105,29 @@ export const PlayerControls: React.FC<PlayerControlsProps> = ({ showControls, se
             )}
           </MediaButton>
 
-          <MediaButton onPress={onPlayNextEpisode} disabled={!hasNextEpisode}>
+          <MediaButton 
+            onPress={onPlayNextEpisode} 
+            disabled={!hasNextEpisode}
+          >
             <SkipForward color={hasNextEpisode ? "white" : "#666"} size={24} />
           </MediaButton>
 
-          <MediaButton onPress={setOutroStartTime} timeLabel={outroStartTime ? formatTime(outroStartTime) : undefined}>
+          <MediaButton 
+            onPress={setOutroStartTime} 
+            timeLabel={outroStartTime ? formatTime(outroStartTime) : undefined}
+          >
             <ArrowUpFromDot color="white" size={24} />
           </MediaButton>
 
-          <MediaButton onPress={() => setShowEpisodeModal(true)}>
+          <MediaButton 
+            onPress={() => setShowEpisodeModal(true)}
+          >
             <List color="white" size={24} />
           </MediaButton>
 
-          <MediaButton onPress={() => setShowSourceModal(true)}>
+          <MediaButton 
+            onPress={() => setShowSourceModal(true)}
+          >
             <Tv color="white" size={24} />
           </MediaButton>
         </View>
@@ -178,25 +196,5 @@ const styles = StyleSheet.create({
     height: 30,
     top: -10,
     zIndex: 10,
-  },
-  controlButton: {
-    padding: 10,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  topRightContainer: {
-    padding: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    minWidth: 44, // Match TouchableOpacity default size for alignment
-  },
-  resolutionText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-    backgroundColor: "rgba(0,0,0,0.5)",
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 6,
   },
 });

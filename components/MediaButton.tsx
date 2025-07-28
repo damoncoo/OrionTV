@@ -1,17 +1,19 @@
-import React, { ComponentProps } from "react";
+import React, { ComponentProps, forwardRef } from "react";
 import { StyledButton } from "./StyledButton";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, Text } from "react-native";
 
 type StyledButtonProps = ComponentProps<typeof StyledButton> & {
   timeLabel?: string;
 };
 
-export const MediaButton = ({ timeLabel, ...props }: StyledButtonProps) => (
-  <View>
-    <StyledButton {...props} style={[styles.mediaControlButton, props.style]} variant="ghost" />
+export const MediaButton = forwardRef<any, StyledButtonProps>(({ timeLabel, ...props }, ref) => (
+  <>
+    <StyledButton {...props} ref={ref} style={[styles.mediaControlButton, props.style]} variant="ghost" />
     {timeLabel && <Text style={styles.timeLabel}>{timeLabel}</Text>}
-  </View>
-);
+  </>
+));
+
+MediaButton.displayName = "MediaButton";
 
 const styles = StyleSheet.create({
   mediaControlButton: {

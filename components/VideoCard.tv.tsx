@@ -195,8 +195,8 @@ VideoCard.displayName = "VideoCard";
 
 export default VideoCard;
 
-const CARD_WIDTH = 160;
-const CARD_HEIGHT = 240;
+const CARD_WIDTH = 300;
+const CARD_HEIGHT = 500;
 
 const styles = StyleSheet.create({
   wrapper: {

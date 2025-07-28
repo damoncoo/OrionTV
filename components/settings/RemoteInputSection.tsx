@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { View, Switch, StyleSheet, Pressable, Animated } from "react-native";
+import { View, StyleSheet, Pressable, Animated } from "react-native";
 import { useTVEventHandler } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { SettingsSection } from "./SettingsSection";
@@ -13,6 +13,23 @@ interface RemoteInputSectionProps {
   onFocus?: () => void;
   onBlur?: () => void;
 }
+
+// Custom Switch component for tvOS
+const CustomSwitch: React.FC<{
+  value: boolean;
+  onValueChange: (value: boolean) => void;
+  disabled?: boolean;
+}> = ({ value, onValueChange, disabled = false }) => {
+  return (
+    <Pressable 
+      style={[styles.switchContainer, value ? styles.switchContainerOn : styles.switchContainerOff]}
+      onPress={() => !disabled && onValueChange(!value)}
+      disabled={disabled}
+    >
+      <Animated.View style={[styles.switchThumb, value ? styles.switchThumbOn : styles.switchThumbOff]} />
+    </Pressable>
+  );
+};
 
 export const RemoteInputSection: React.FC<RemoteInputSectionProps> = ({ onChanged, onFocus, onBlur }) => {
   const { remoteInputEnabled, setRemoteInputEnabled } = useSettingsStore();
@@ -57,12 +74,9 @@ export const RemoteInputSection: React.FC<RemoteInputSectionProps> = ({ onChange
           <ThemedText style={styles.settingName}>启用远程输入</ThemedText>
         </View>
         <Animated.View style={animationStyle}>
-          <Switch
+          <CustomSwitch
             value={remoteInputEnabled}
-            onValueChange={() => {}} // 禁用Switch的直接交互
-            trackColor={{ false: "#767577", true: Colors.dark.primary }}
-            thumbColor={remoteInputEnabled ? "#ffffff" : "#f4f3f4"}
-            pointerEvents="none"
+            onValueChange={handleToggle}
           />
         </Animated.View>
       </Pressable>
@@ -107,18 +121,13 @@ const styles = StyleSheet.create({
   },
   settingName: {
     fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 4,
-  },
-  settingDescription: {
-    fontSize: 14,
-    color: "#888",
+    fontWeight: "500",
   },
   statusContainer: {
     marginTop: 16,
-    padding: 16,
-    backgroundColor: "#2a2a2c",
-    borderRadius: 8,
+    paddingTop: 16,
+    borderTopWidth: 1,
+    borderTopColor: "#333",
   },
   statusItem: {
     flexDirection: "row",
@@ -126,19 +135,37 @@ const styles = StyleSheet.create({
   },
   statusLabel: {
     fontSize: 14,
-    color: "#ccc",
-    minWidth: 80,
+    color: "#888",
+    width: 80,
   },
   statusValue: {
     fontSize: 14,
     flex: 1,
   },
-  actionButtons: {
-    flexDirection: "row",
-    gap: 12,
-    marginTop: 12,
+  // Custom Switch Styles
+  switchContainer: {
+    width: 50,
+    height: 30,
+    borderRadius: 15,
+    justifyContent: "center",
+    padding: 2,
   },
-  actionButton: {
-    flex: 1,
+  switchContainerOn: {
+    backgroundColor: Colors.dark.primary,
+  },
+  switchContainerOff: {
+    backgroundColor: "#767577",
+  },
+  switchThumb: {
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: "white",
+  },
+  switchThumbOn: {
+    alignSelf: "flex-end",
+  },
+  switchThumbOff: {
+    alignSelf: "flex-start",
   },
 });
